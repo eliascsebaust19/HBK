@@ -17,7 +17,7 @@
     --muted: #a0a0b0;
     --accent: #00d2ff;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
   body {
     font-family: 'Noto Sans Bengali', 'Segoe UI', sans-serif;
@@ -86,16 +86,104 @@
   .signature { margin-top: 34px; text-align: right; font-weight: 600; color: var(--gold); font-size: 1.15rem; }
   .signature span { color: #fff; }
   footer { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 0.9rem; border-top: 1px solid #1a1a24; }
+  /* ============ TABLET & MOBILE RESPONSIVENESS ============ */
+  @media (max-width: 768px) {
+    .hero { padding: 60px 20px 40px; }
+    .cake-section { padding: 60px 16px 40px; }
+    .letter-section { padding: 50px 16px 80px; }
+  }
+
   @media (max-width: 480px) {
-    .card { padding: 28px 20px; }
-    .card h2 { font-size: 1.5rem; }
-    .cake { width: 180px; height: 180px; }
-    .cake-layer.bottom { width: 160px; height: 75px; }
-    .cake-layer.top { width: 110px; height: 55px; bottom: 75px; }
-    .cake-frosting { bottom: 75px; width: 120px; height: 18px; }
-    .cake-frosting.top { bottom: 135px; width: 90px; height: 15px; }
-    .candle { height: 32px; top: -37px; }
-    .candle::before { top: -18px; width: 14px; height: 14px; }
+    .music-toggle {
+      top: 14px;
+      right: 14px;
+      width: 48px;
+      height: 48px;
+      font-size: 1.3rem;
+    }
+    .eq { height: 11px; gap: 2px; }
+    .eq .bar { width: 3px; }
+
+    .hero {
+      padding: 75px 14px 45px;
+      min-height: 90vh;
+    }
+    .wish-sparkle-pill {
+      font-size: 0.8rem;
+      padding: 6px 16px;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: clamp(1.65rem, 7.8vw, 2.4rem);
+      letter-spacing: 1px;
+    }
+    .hero h2 {
+      font-size: clamp(1.3rem, 5.5vw, 1.8rem);
+      margin-top: 8px;
+      margin-bottom: 18px;
+    }
+    .hero p {
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      padding: 0 4px;
+      line-height: 1.65;
+    }
+    .celebrate-btn {
+      padding: 13px 28px;
+      font-size: 1rem;
+    }
+
+    .cake-section { padding: 40px 14px 30px; }
+    .cake-section h3 { font-size: 1.35rem; }
+    .cake-section p { font-size: 0.92rem; }
+    .cake { width: 170px; height: 170px; margin: 0 auto 20px; }
+    .cake-layer.bottom { width: 150px; height: 70px; }
+    .cake-layer.top { width: 105px; height: 50px; bottom: 70px; }
+    .cake-frosting.bottom { bottom: 70px; width: 118px; height: 16px; }
+    .cake-frosting.top { bottom: 120px; width: 88px; height: 14px; }
+    .candle { height: 30px; top: -33px; width: 8px; }
+    .candle:nth-child(1) { left: 32%; }
+    .candle:nth-child(2) { left: 50%; }
+    .candle:nth-child(3) { left: 68%; }
+    .candle::before { top: -16px; width: 14px; height: 14px; }
+
+    .letter-section { padding: 30px 12px 60px; }
+    .card {
+      padding: 24px 18px;
+      border-radius: 18px;
+    }
+    .card h2 {
+      font-size: 1.45rem;
+      margin-bottom: 10px;
+    }
+    .card .meta {
+      font-size: 0.82rem;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+    }
+    .letter {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      word-break: break-word;
+    }
+    .signature {
+      margin-top: 24px;
+      font-size: 1.02rem;
+    }
+
+    footer {
+      padding: 28px 14px;
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .hero h1 { font-size: 1.45rem; }
+    .hero h2 { font-size: 1.18rem; }
+    .card { padding: 20px 12px; }
+    .letter { font-size: 0.88rem; }
   }</style>
 </head>
 <body><canvas id="confetti"></canvas>
@@ -208,17 +296,19 @@ setTimeout(()=>{if(ci===0)typeIt();},1500);
 /* ============ FLOATING BALLOONS ============ */
 const bColors = ['#e91e63','#8b5cf6','#00d2ff','#ffd700','#ff5722','#4caf50','#f06292'];
 function spawnBalloons() {
-  for (let i = 0; i < 18; i++) {
+  const isMobile = window.innerWidth <= 480;
+  const count = isMobile ? 10 : 18;
+  for (let i = 0; i < count; i++) {
     const b = document.createElement('div');
     b.className = 'balloon';
     const c = bColors[i % bColors.length];
     b.style.background = c;
     b.style.boxShadow = `inset -5px -5px 12px rgba(0,0,0,0.3), 0 0 20px ${c}66`;
-    b.style.left = (Math.random() * 94) + 'vw';
+    b.style.left = (Math.random() * 92) + 'vw';
     const dur = Math.random() * 7 + 8;
     b.style.animationDuration = dur + 's';
-    b.style.animationDelay = (Math.random() * 12) + 's';
-    const s = Math.random() * 0.4 + 0.8;
+    b.style.animationDelay = (Math.random() * 10) + 's';
+    const s = isMobile ? (Math.random() * 0.25 + 0.65) : (Math.random() * 0.4 + 0.8);
     b.style.transform = `scale(${s})`;
     document.body.appendChild(b);
   }
