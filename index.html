@@ -6,7 +6,8 @@
 <title>শুভ জন্মদিন, কাওসার! 🎂</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Courgette&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/css/card.css">
 <style>  :root {
     --bg: #0a0a0c;
     --card: #121216;
@@ -200,6 +201,7 @@
   <h2>প্রিয় কাওসার! ❤️</h2>
   <p>জীবনের এই সুন্দর অধ্যায়ের শুরুতে হৃদয় থেকে শুভকামনা রইলো।</p>
   <button class="celebrate-btn" id="celebrateBtn">Enjoy Your Day 🎉</button>
+  <button class="gift-card-btn" id="openCardHeroBtn" onclick="openCardExperience()">🎁 Open Surprise Birthday Card</button>
 </section>
 
 <section class="cake-section">
@@ -217,7 +219,17 @@
   <p class="blow-hint" id="blowHint">Microphone a ফুঁঁ দিয়েও মোমবাতি নিভানো যায় (অপশনাল)</p>
 </section>
 
-<section class="letter-section">
+<section class="card-teaser-section">
+  <div class="card-teaser-card">
+    <div class="card-teaser-badge">SPECIAL SURPRISE</div>
+    <div class="card-teaser-icon">🎁</div>
+    <h2>A Special Surprise for Kawsar</h2>
+    <p>কাওসার, তোমার জন্য রয়েছে একটি চমৎকার ইন্টারেক্টিভ সারপ্রাইজ কার্ড ও বিশেষ উপহার। এখনই খুলে দেখে নাও!</p>
+    <button class="gift-card-btn" onclick="openCardExperience()">✨ Launch Card Adventure</button>
+  </div>
+</section>
+
+<section class="letter-section" id="letterSection">
   <div class="card">
     <h2>প্রিয় কাওসার, ❤️</h2>
     <div class="meta">তোমার বড় ভাইয়ের পক্ষ থেকে — ভালোবাসা ও দোয়া Thaklo</div>
@@ -278,7 +290,7 @@ document.body.addEventListener('click',()=>{if(!playing&&!actx)toggleM();},{once
 
 /* ============ CAKE ============ */
 const candles=document.querySelectorAll('.candle');const cTitle=document.getElementById('cakeTitle');const cMsg=document.getElementById('cakeMsg');const hint=document.getElementById('blowHint');let lit=candles.length;
-function ext(c){if(!c.classList.contains('lit'))return;c.classList.remove('lit');c.classList.add('unlit');lit--;const r=c.getBoundingClientRect();burst(r.left+r.width/2,r.top,25);burstFW(r.left+r.width/2,hF*0.25);if(lit===0){cTitle.textContent='ইচ্ছা পূরণ হয়েছে! 🎉';cTitle.style.color='#00d2ff';cMsg.textContent='কাওসার, তোমার সমস্ত ইচ্ছা পূর্ণ হোক। শুভ জন্মদিন!';cMsg.style.color='#fff';hint.style.display='none';setTimeout(fwShow,400);}}
+function ext(c){if(!c.classList.contains('lit'))return;c.classList.remove('lit');c.classList.add('unlit');lit--;const r=c.getBoundingClientRect();burst(r.left+r.width/2,r.top,25);burstFW(r.left+r.width/2,hF*0.25);if(lit===0){cTitle.textContent='ইচ্ছা পূরণ হয়েছে! 🎉';cTitle.style.color='#00d2ff';cMsg.innerHTML='কাওসার, তোমার সমস্ত ইচ্ছা পূর্ণ হোক! শুভ জন্মদিন! <br><button class="gift-card-btn small" onclick="openCardExperience()">🎁 সারপ্রাইজ উপহারটি খুলুন</button>';cMsg.style.color='#fff';hint.style.display='none';setTimeout(fwShow,400);}}
 candles.forEach(c=>c.addEventListener('click',e=>{e.stopPropagation();ext(c);}));
 function fwShow(){for(let i=0;i<8;i++)setTimeout(()=>burstFW(Math.random()*wF,hF*0.2+Math.random()*hF*0.5),i*400);}
 
@@ -320,4 +332,111 @@ setTimeout(() => {
   burstFW(wC * 0.75, hF * 0.25);
 }, 600);
 </script>
+
+<!-- ========================================================
+     INTERACTIVE BIRTHDAY CARD MODAL EXPERIENCE
+     Integrated from Happy-Birthday-Card by Anshuman Mahato
+     Personalized for Kawsar
+     ======================================================== -->
+<div id="cardOverlay" aria-modal="true" role="dialog" aria-label="Birthday Card Experience">
+  <!-- Controls -->
+  <button class="card-ctrl-btn card-close-btn" onclick="closeCardExperience()" title="Close Card" aria-label="Close">✕</button>
+  <button class="card-ctrl-btn card-audio-btn" id="cardAudioToggleBtn" onclick="toggleCardAudio()" title="Toggle Sound">🔊 Sound On</button>
+
+  <!-- Flash explosion overlay -->
+  <div class="scene-flash"></div>
+
+  <!-- Scene 1: Darkroom -->
+  <div class="scene-layer scene-darkroom">
+    <div class="story-text-container">
+      <p class="story-text">Hey!</p>
+      <p class="story-text">Why is it so dark in here?</p>
+      <p class="story-text"><span class="name-highlight">Kawsar</span>! Can you please turn on the lights?</p>
+    </div>
+    <div class="card-action-btn-wrapper">
+      <button class="card-action-btn btn-bulb" onclick="handleCardAction('switch')" aria-label="Turn on lights"></button>
+      <div class="card-btn-hint">💡 Click the Light Bulb</div>
+    </div>
+  </div>
+
+  <!-- Scene 2: Empty Bedroom -->
+  <div class="scene-layer scene-emptyroom hidden">
+    <div class="story-text-container">
+      <p class="story-text">Ok! Why is it so quiet and empty here?</p>
+      <p class="story-text">Let's check outside to see where everyone is...</p>
+    </div>
+    <div class="card-action-btn-wrapper">
+      <button class="card-action-btn btn-door" onclick="handleCardAction('door-out')" aria-label="Open door to hallway"></button>
+      <div class="card-btn-hint">🚪 Open the Door</div>
+    </div>
+  </div>
+
+  <!-- Scene 3: Creepy Hallway -->
+  <div class="scene-layer scene-hallway hidden">
+    <div class="story-text-container">
+      <p class="story-text">Whoa! The hallway looks a bit mysterious...</p>
+      <p class="story-text">Things are creepy here... I think we should go back inside!</p>
+    </div>
+    <div class="card-action-btn-wrapper">
+      <button class="card-action-btn btn-door" onclick="handleCardAction('door-in')" aria-label="Return to room"></button>
+      <div class="card-btn-hint">🚪 Go Back Inside</div>
+    </div>
+  </div>
+
+  <!-- Scene 4: Gift Room -->
+  <div class="scene-layer scene-giftroom hidden">
+    <div class="story-text-container">
+      <p class="story-text">Whew, that was an adventure!</p>
+      <p class="story-text">Hey look! There's a special gift waiting just for you...</p>
+      <p class="story-text">Come on, open it and see what's inside!</p>
+    </div>
+    <div class="card-action-btn-wrapper">
+      <button class="card-action-btn btn-gift" onclick="handleCardAction('gift')" aria-label="Open gift box"></button>
+      <div class="card-btn-hint">🎁 Open Your Gift</div>
+    </div>
+  </div>
+
+  <!-- Scene 5: The Grand Card Reveal -->
+  <div class="scene-layer scene-grandcard hidden">
+    <!-- Hanging Bunting Flags -->
+    <div class="card-flags-wrapper">
+      <img src="./assets/img/flag-left.png" alt="Flags" class="card-flag-img" />
+      <img src="./assets/img/flag-right.png" alt="Flags" class="card-flag-img" />
+      <img src="./assets/img/flag-left.png" alt="Flags" class="card-flag-img" />
+      <img src="./assets/img/flag-right.png" alt="Flags" class="card-flag-img" />
+    </div>
+
+    <!-- Side Celebration Balloons -->
+    <img src="./assets/img/balloon-left.png" alt="" class="card-balloon-left" />
+    <img src="./assets/img/balloon-right.png" alt="" class="card-balloon-right" />
+
+    <!-- Center Grand Card -->
+    <div class="hbd-grand-card">
+      <div class="hbd-avatar-wrapper">
+        <div class="hbd-pic-frame">
+          <img src="./assets/img/kawsar.jpg" alt="Kawsar" class="hbd-photo" />
+        </div>
+        <img src="./assets/img/bday-cap.svg" alt="Cap" class="hbd-cap" />
+        <img src="./assets/img/confetti.svg" alt="" class="hbd-confetti-ring" />
+        <img src="./assets/img/cake.svg" alt="Cake" class="hbd-cake-svg" />
+        <div class="hbd-velas">
+          <div class="hbd-fuego"></div>
+        </div>
+      </div>
+
+      <div class="hbd-card-details">
+        <h2 class="hbd-card-title">Happy Birthday</h2>
+        <h1 class="hbd-card-name">Kawsar!</h1>
+        <p class="hbd-card-subtitle">Here's a little gift for you — with heartfelt love, respect, and prayers from your big brother & family!</p>
+        <div class="hbd-card-actions">
+          <button class="hbd-btn-primary" onclick="readLetterFromCard()">📜 Read Big Brother's Letter</button>
+          <button class="hbd-btn-secondary" onclick="restartCardExperience()">🔁 Replay Surprise</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="./assets/js/card.js" defer></script>
+
 </body></html>
